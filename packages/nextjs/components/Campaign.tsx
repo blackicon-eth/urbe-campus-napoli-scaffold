@@ -1,10 +1,7 @@
 import { useEffect, useState } from "react";
 import { IntegerInput } from "./scaffold-eth/Input";
-import { erc20Abi } from "viem";
-import { useWriteContract } from "wagmi";
 import { useScaffoldReadContract, useScaffoldWriteContract } from "~~/hooks/scaffold-eth";
 import { parseAmount } from "~~/utils";
-import { USDC_ADDRESS } from "~~/utils/constants";
 
 enum CampaignStatus {
   Active = 0,
@@ -39,24 +36,23 @@ export const Campaign = ({
 }: CampaignInterface) => {
   const [amount, setAmount] = useState(0);
 
-  // Use Write Contract function from wagmi
-  const { writeContract } = useWriteContract();
-
   // Creates a write contract function that can be used to write to our deployed contract
-  const { writeContractAsync } = useScaffoldWriteContract({
+  const { writeContractAsync: writeToCrowdfundingPlatformContract } = useScaffoldWriteContract({
     contractName: "CrowdfundingPlatform",
   });
 
+  // Creates a write contract function that can be used to write to the USDC contract
+  const { writeContractAsync: writeToUSDCContract } = useScaffoldWriteContract({
+    contractName: "USDC",
+  });
+
   // Handles the button click
-  const handleButtonClick = async (campaignId: number) => {
+  const handleButtonClick = async (campaignId: number, crowdfundingPlatformAddress: string) => {
     if (userAllowance < Number(amount)) {
-      if (!CrowdfundingPlatformData?.address) return;
       try {
-        writeContract({
-          abi: erc20Abi,
-          address: USDC_ADDRESS,
+        await writeToUSDCContract({
           functionName: "approve",
-          args: [CrowdfundingPlatformData.address, BigInt(amount)],
+          args: [crowdfundingPlatformAddress, BigInt(amount)],
         });
         await fetchAllowance();
       } catch (error) {
@@ -66,7 +62,7 @@ export const Campaign = ({
       }
     } else {
       try {
-        writeContractAsync({
+        writeToCrowdfundingPlatformContract({
           functionName: "contribute",
           args: [BigInt(campaignId), BigInt(amount)],
         });
@@ -91,7 +87,7 @@ export const Campaign = ({
 
   return (
     <div
-      className="relative flex flex-col gap-4 border border-gray-300 rounded-xl bg-black/50 p-4 min-w-[300px] overflow-hidden"
+      className="relative flex flex-col gap-4 border border-gray-300 rounded-xl bg-black/50 p-4 w-[360px] overflow-hidden"
       key={campaign.title}
     >
       {/* Status Badge */}
@@ -137,7 +133,9 @@ export const Campaign = ({
           <button
             className="bg-blue-500 text-white p-2 rounded-md w-[93%] hover:bg-blue-600 transition-all duration-300 hover:scale-105 cursor-pointer"
             onClick={() => {
-              handleButtonClick(index + 1);
+              // If the crowdfunding platform address is not found, return
+              if (!CrowdfundingPlatformData?.address) return;
+              handleButtonClick(index + 1, CrowdfundingPlatformData.address);
             }}
           >
             Contribute

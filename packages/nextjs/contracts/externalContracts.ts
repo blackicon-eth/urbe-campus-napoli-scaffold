@@ -1,3 +1,5 @@
+import { erc20Abi } from "viem";
+import { USDC_ADDRESS } from "~~/utils/constants";
 import { GenericContractsDeclaration } from "~~/utils/scaffold-eth/contract";
 
 /**
@@ -11,6 +13,13 @@ import { GenericContractsDeclaration } from "~~/utils/scaffold-eth/contract";
  *   },
  * } as const;
  */
-const externalContracts = {} as const;
+const externalContracts = {
+  84532: {
+    USDC: {
+      address: USDC_ADDRESS,
+      abi: erc20Abi,
+    },
+  },
+} as const;
 
 export default externalContracts satisfies GenericContractsDeclaration;
