@@ -81,8 +81,9 @@ export const Campaign = ({
     args: [BigInt(index + 1), connectedAddress],
   });
 
+  // Logs the user contribution to the console when it changes
   useEffect(() => {
-    console.log(userContribution);
+    console.log("userContribution", userContribution);
   }, [userContribution]);
 
   return (
