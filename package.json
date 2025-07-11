@@ -58,6 +58,7 @@
     "node": ">=20.18.3"
   },
   "dependencies": {
-    "lucide-react": "^0.525.0"
+    "lucide-react": "^0.525.0",
+    "motion": "^12.23.3"
   }
 }

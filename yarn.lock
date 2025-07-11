@@ -7530,6 +7530,28 @@ __metadata:
   languageName: node
   linkType: hard
 
+"framer-motion@npm:^12.23.3":
+  version: 12.23.3
+  resolution: "framer-motion@npm:12.23.3"
+  dependencies:
+    motion-dom: ^12.23.2
+    motion-utils: ^12.23.2
+    tslib: ^2.4.0
+  peerDependencies:
+    "@emotion/is-prop-valid": "*"
+    react: ^18.0.0 || ^19.0.0
+    react-dom: ^18.0.0 || ^19.0.0
+  peerDependenciesMeta:
+    "@emotion/is-prop-valid":
+      optional: true
+    react:
+      optional: true
+    react-dom:
+      optional: true
+  checksum: 26f9eba8df649dbc9091b7268c47ef2d368f2a7ffd57584181cb20f88090a3ce73533055d01bade4b08e981a09c9f64cdd1bebd63506e02ce08db4fd837a1743
+  languageName: node
+  linkType: hard
+
 "fs-extra@npm:11.1.0":
   version: 11.1.0
   resolution: "fs-extra@npm:11.1.0"
@@ -10081,6 +10103,43 @@ __metadata:
   languageName: node
   linkType: hard
 
+"motion-dom@npm:^12.23.2":
+  version: 12.23.2
+  resolution: "motion-dom@npm:12.23.2"
+  dependencies:
+    motion-utils: ^12.23.2
+  checksum: 27c85c5e7f7db44c74b2caebe2023e897ec98453b6add0d361df6139fbb01b8e4591f0098d652531ab2f42e4b767035321590e58e1c625375e903ce2b5933f2e
+  languageName: node
+  linkType: hard
+
+"motion-utils@npm:^12.23.2":
+  version: 12.23.2
+  resolution: "motion-utils@npm:12.23.2"
+  checksum: 3667e667f159ed6a7dc14d659c1269028d4ca3ead3d39811048dfe61992394aa1b2c3e10ab690d9d3b0b1aedb8dba1415958a9b53cda62bad509f286c7800117
+  languageName: node
+  linkType: hard
+
+"motion@npm:^12.23.3":
+  version: 12.23.3
+  resolution: "motion@npm:12.23.3"
+  dependencies:
+    framer-motion: ^12.23.3
+    tslib: ^2.4.0
+  peerDependencies:
+    "@emotion/is-prop-valid": "*"
+    react: ^18.0.0 || ^19.0.0
+    react-dom: ^18.0.0 || ^19.0.0
+  peerDependenciesMeta:
+    "@emotion/is-prop-valid":
+      optional: true
+    react:
+      optional: true
+    react-dom:
+      optional: true
+  checksum: a8fba3e0ab6fc9cf0b738364e5756e234ac990fe84ed77b36b22eb460d15c187fce634a9391c536b6cb4c0198bbb3366087befc0a676017301171429db08c79d
+  languageName: node
+  linkType: hard
+
 "mri@npm:1.2.0, mri@npm:^1.1.0":
   version: 1.2.0
   resolution: "mri@npm:1.2.0"
@@ -12194,6 +12253,7 @@ __metadata:
     husky: ~9.1.6
     lint-staged: ~13.2.2
     lucide-react: ^0.525.0
+    motion: ^12.23.3
   languageName: unknown
   linkType: soft
 

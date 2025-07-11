@@ -2,6 +2,7 @@
 
 import { useCallback, useEffect, useState } from "react";
 import { Loader2 } from "lucide-react";
+import { AnimatePresence, motion } from "motion/react";
 import type { NextPage } from "next";
 import { erc20Abi } from "viem";
 import { usePublicClient } from "wagmi";
@@ -59,30 +60,57 @@ const Home: NextPage = () => {
     console.log("allowance", userAllowance);
   }, [userAllowance]);
 
+  // Debounce the loading state
+  const [debouncedIsLoadingCampaigns, setDebouncedIsLoadingCampaigns] = useState(true);
+
+  useEffect(() => {
+    const timer = setTimeout(() => {
+      setDebouncedIsLoadingCampaigns(isLoadingCampaigns);
+    }, 2000);
+
+    return () => clearTimeout(timer);
+  }, [isLoadingCampaigns]);
+
   return (
-    <div className="flex items-start size-full justify-center py-20 px-16 gap-10">
-      {isLoadingCampaigns ? (
-        <div className="flex items-center justify-center mt-36">
-          <Loader2 className="animate-spin text-white size-10" />
-        </div>
-      ) : (
-        <div className="grid grid-cols-4 w-full place-items-center">
-          {campaigns?.map((campaign, index) => {
-            return (
-              <Campaign
-                key={index}
-                campaign={campaign}
-                userAllowance={userAllowance}
-                CrowdfundingPlatformData={CrowdfundingPlatformData}
-                index={index}
-                connectedAddress={connectedAddress || ""}
-                fetchAllowance={fetchAllowance}
-                refetchCampaigns={refetchCampaigns}
-              />
-            );
-          })}
-        </div>
-      )}
+    <div className="flex items-start size-full justify-center sm:py-20 py-7 sm:px-16 px-6 gap-10">
+      <AnimatePresence mode="wait">
+        {debouncedIsLoadingCampaigns ? (
+          <motion.div
+            key="loading"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 1 }}
+            className="flex items-center justify-center mt-36"
+          >
+            <Loader2 className="animate-spin text-white size-10" />
+          </motion.div>
+        ) : (
+          <motion.div
+            key="campaigns"
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            transition={{ duration: 1 }}
+            className="grid sm:grid-cols-4 grid-cols-1 gap-3 w-full place-items-center"
+          >
+            {campaigns?.map((campaign, index) => {
+              return (
+                <Campaign
+                  key={index}
+                  campaign={campaign}
+                  userAllowance={userAllowance}
+                  CrowdfundingPlatformData={CrowdfundingPlatformData}
+                  index={index}
+                  connectedAddress={connectedAddress || ""}
+                  fetchAllowance={fetchAllowance}
+                  refetchCampaigns={refetchCampaigns}
+                />
+              );
+            })}
+          </motion.div>
+        )}
+      </AnimatePresence>
     </div>
   );
 };
